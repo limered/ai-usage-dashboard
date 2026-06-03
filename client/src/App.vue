@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMetrics } from './composables/useMetrics'
+import BreakdownCharts from './components/BreakdownCharts.vue'
+import TrendCharts from './components/TrendCharts.vue'
 
 const { data, loading, error } = useMetrics()
 
@@ -43,5 +45,7 @@ const acceptanceRate = computed(() => {
         <p class="mt-2 text-3xl font-bold text-gray-900">{{ latest.total_acceptances_count.toLocaleString() }}</p>
       </div>
     </div>
+
+    <TrendCharts v-if="data.length" :metrics="data" />
   </div>
 </template>
