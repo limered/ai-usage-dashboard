@@ -23,7 +23,7 @@ public class GitHubCopilotClient
             ?? throw new InvalidOperationException("GITHUB_ORG is required.");
     }
 
-    public async Task<List<DailyMetrics>> GetMetricsAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<List<DailyMetrics>> GetMetricsAsync(CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.GetAsync($"/orgs/{_org}/copilot/metrics", cancellationToken);
 

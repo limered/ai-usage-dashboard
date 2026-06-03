@@ -2,6 +2,9 @@ using AiUsageDashboard.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<MetricsCache>();
+
 var githubPat = builder.Configuration["GITHUB_PAT"]
     ?? Environment.GetEnvironmentVariable("GITHUB_PAT")
     ?? throw new InvalidOperationException("GITHUB_PAT environment variable is required.");
@@ -24,6 +27,19 @@ var app = builder.Build();
 app.UseStaticFiles();
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "healthy" }));
+
+app.MapGet("/api/metrics", async (MetricsCache cache, CancellationToken cancellationToken) =>
+{
+    try
+    {
+        var metrics = await cache.GetMetricsAsync(cancellationToken);
+        return Results.Ok(metrics);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(detail: ex.Message, statusCode: 503);
+    }
+});
 
 app.MapFallbackToFile("index.html");
 
