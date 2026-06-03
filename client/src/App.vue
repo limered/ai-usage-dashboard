@@ -43,9 +43,8 @@ const acceptanceRate = computed(() => {
       <div class="bg-white rounded-lg shadow p-6">
         <p class="text-sm text-gray-500 uppercase tracking-wide">Total Acceptances</p>
         <p class="mt-2 text-3xl font-bold text-gray-900">{{ latest.total_acceptances_count.toLocaleString() }}</p>
-      </div>
     </div>
 
-    <TrendCharts v-if="data.length" :metrics="data" />
+    <BreakdownCharts v-if="data.length" :metrics="data" />
   </div>
 </template>
